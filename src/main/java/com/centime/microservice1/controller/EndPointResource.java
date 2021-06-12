@@ -1,5 +1,6 @@
 package com.centime.microservice1.controller;
 
+import com.centime.microservice1.exception.ServiceNotAvailableException;
 import com.centime.microservice1.model.Person;
 import com.centime.microservice1.service.EndpointService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +23,7 @@ public class EndPointResource {
     private EndpointService endpointService;
 
     @GetMapping("/healthcheck")
-    public Health getHealthCheck() throws JsonProcessingException {
+    public Health getHealthCheck() throws JsonProcessingException, ServiceNotAvailableException {
         return endpointService.getHealthCheckInfo();
     }
 

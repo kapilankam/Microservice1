@@ -41,6 +41,14 @@ class EndpointExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ServiceNotAvailableException.class)
+    public final ResponseEntity handleServiceNotAvailableException(ServiceNotAvailableException ex) {
+        List<String> errorDetails = new ArrayList<>();
+        errorDetails.add(ex.getMessage());
+        ErrorResponse error = new ErrorResponse("Service Healthcheck Failed.", errorDetails);
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(JsonProcessingException.class)
     public final ResponseEntity handleJsonProcessingException(
             ConnectException ex) {

@@ -1,5 +1,6 @@
 package com.centime.microservice1.service;
 
+import com.centime.microservice1.exception.ServiceNotAvailableException;
 import com.centime.microservice1.model.HealthStatus;
 import com.centime.microservice1.model.Person;
 import com.centime.microservice1.proxy.Service2Proxy;
@@ -30,28 +31,18 @@ public class EndpointService {
     /**
      * This method will check the health indicator of the other two services.
      */
-    public Health getHealthCheckInfo() throws JsonProcessingException {
-        String service2HealthIndicator = "";
-        String service3HealthIndicator = "";
+    public Health getHealthCheckInfo() throws JsonProcessingException, ServiceNotAvailableException {
         try {
-            service2HealthIndicator = service2Proxy.getHealthIndicator();
+            service2Proxy.getHealthIndicator();
         } catch (Exception exception) {
             LOG.error(exception.getLocalizedMessage(), exception);
-            service2HealthIndicator = DOWN;
-        }
-        HealthStatus service2health = new ObjectMapper().readValue(service2HealthIndicator, HealthStatus.class);
-        if (StringUtils.isNoneEmpty(service2health.getStatus()) && StringUtils.equalsIgnoreCase(service2health.getStatus(), DOWN)) {
-            return Health.down().withDetail("reason", "Service 2 is down").build();
+            throw new ServiceNotAvailableException("Service 2 is down");
         }
         try {
-            service3HealthIndicator = service3Proxy.getHealthIndicator();
+            service3Proxy.getHealthIndicator();
         } catch (Exception exception) {
             LOG.error(exception.getLocalizedMessage(), exception);
-            service3HealthIndicator = DOWN;
-        }
-        HealthStatus service3health = new ObjectMapper().readValue(service3HealthIndicator, HealthStatus.class);
-        if (StringUtils.isNoneEmpty(service3health.getStatus()) && StringUtils.equalsIgnoreCase(service3health.getStatus(), DOWN)) {
-            return Health.down().withDetail("reason", "Service 3 is down").build();
+            throw new ServiceNotAvailableException("Service 3 is down");
         }
         return Health.up().build();
     }
