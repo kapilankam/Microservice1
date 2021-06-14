@@ -11,14 +11,6 @@ Components/Libraries use    d:
 5. Swagger UI for documentation.
 
 
-EC2 Instance Public hostnames
-
-MicrosService3:
-ec2-52-66-203-131.ap-south-1.compute.amazonaws.com
-MicroService2:
-ec2-15-206-123-135.ap-south-1.compute.amazonaws.com
-Microservice1:
-ec2-13-233-245-195.ap-south-1.compute.amazonaws.com	
 
 Swagger UI endpoint:
 http://ec2-13-233-245-195.ap-south-1.compute.amazonaws.com:8080/swagger-ui.html#/end-point-resource
